@@ -52,14 +52,14 @@
 	 <select id = "getProductList" parameterType="search" resultMap="productSelectMap">
 	 	SELECT *
 	 	FROM ( SELECT inner_table.*, ROWNUM AS row_seq 
-	 			FROM ( SELECT *	FROM product
+	 			FROM ( SELECT p.*, NVL(t.tran_status_code,0) NTSC from PRODUCT p, transaction t, where p.prod_no = t.prodNo(+)
 	 							<if test="searchCondition != null">
 									<where>
 										<if test="searchCondition == 0 and searchKeyword !='' ">
-	 										prod_no = #{searchKeyword}
+	 										AND p.prod_no = #{searchKeyword}
 	 									</if>
 										    <if test="searchCondition == 1 and searchKeyword !='' ">
-	 										prod_name = '%${searchKeyword}%'
+	 										AND p.prod_name = '%${searchKeyword}%'
 	 									</if>
 	 								</where>
 	 							</if>
